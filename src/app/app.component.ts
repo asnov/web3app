@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 
-// import * as Web3Provider from 'web3';
-// import BigNumber from 'web3/bower/bignumber.js/bignumber';
-
 // import { BigNumber } from 'ethers';
 // import { JsonRpcProvider, Web3Provider } from 'ethers/providers';
 import * as ethers from 'ethers';
@@ -35,13 +32,6 @@ export class AppComponent {
   title = 'web3app';
 
   private web3Provider: any;
-  private web3: {
-    eth: {
-      getCoinbase: (callback: (err, account: string) => void) => void;
-      getBalance: (account: string, callback: (err, bn: BigNumber) => void) => void;
-    }
-    fromWei: Function;
-  };
   private ethers: Web3Provider;
   accountInfo: AccountInfo;
 
@@ -49,41 +39,16 @@ export class AppComponent {
     if (typeof window.web3 !== 'undefined') {
       this.web3Provider = window.web3.currentProvider;
     } else {
-      // this.web3Provider = new Web3Provider.providers.HttpProvider('http://localhost:8545');
       this.web3Provider = new JsonRpcProvider('http://localhost:8545');
     }
-    // this.web3 = new Web3Provider(this.web3Provider);
     this.ethers = new Web3Provider(this.web3Provider);
 
-    // this.getAccountInfo()
     this.getAccountInfoEthers()
       .then(accountInfo => {
         console.log(`accountInfo=`, accountInfo);
         this.accountInfo = accountInfo;
       })
       .catch(console.error);
-  }
-
-  getAccountInfo() {
-    return new Promise<AccountInfo>((resolve, reject) => {
-      this.web3.eth.getCoinbase((errCoinbase, account) => {
-        if (errCoinbase === null) {
-          console.log(`web3.eth.getCoinbase():`, account);
-          this.web3.eth.getBalance(account, (errBalance, balance) => {
-            if (errBalance === null) {
-              console.log(`web3.eth.getBalance():`, balance);
-              resolve({account, balance: this.web3.fromWei(balance, 'ether')});
-            } else {
-              console.error(`Error: web3.eth.getBalance:`, errCoinbase);
-              reject(`Error: ${errBalance}`);
-            }
-          });
-        } else {
-          console.error(`Error: web3.eth.getCoinbase:`, errCoinbase);
-          reject(`Error: ${errCoinbase}`);
-        }
-      });
-    });
   }
 
   getAccountInfoEthers(): Promise<AccountInfo> {
