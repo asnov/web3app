@@ -27,7 +27,6 @@ export class AppComponent {
   title = 'web3app';
 
   private web3Provider: null;
-  // private contracts: {};
   private web3: {
     eth: {
       getCoinbase: (callback: (err, account: string) => void) => void;
