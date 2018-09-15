@@ -10,6 +10,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+
+    "importHelpers": false,
+    "noEmitHelpers": true,
+
     "typeRoots": [
       "node_modules/@types"
     ],
