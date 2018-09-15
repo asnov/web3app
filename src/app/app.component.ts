@@ -35,6 +35,8 @@ export class AppComponent {
   private ethers: Web3Provider;
   accountInfo: AccountInfo;
 
+  extendsTest = new Child();
+
   constructor() {
     if (typeof window.web3 !== 'undefined') {
       this.web3Provider = window.web3.currentProvider;
@@ -49,6 +51,8 @@ export class AppComponent {
         this.accountInfo = accountInfo;
       })
       .catch(console.error);
+
+    this.extendsTest.log();
   }
 
   getAccountInfoEthers(): Promise<AccountInfo> {
@@ -73,4 +77,21 @@ export class AppComponent {
     });
   }
 
+}
+
+export class Parent {
+  isGoodParent = true;
+  constructor(protected familyName = 'Red') { }
+}
+
+export class Child extends Parent {
+  constructor(
+    protected firstName = 'John',
+    familyName = 'Red',
+  ) {
+    super(familyName);
+  }
+  log() {
+    console.log(this.firstName, this.familyName, this.isGoodParent);
+  }
 }
